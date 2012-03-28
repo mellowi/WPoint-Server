@@ -1,11 +1,15 @@
 require 'rubygems'
-require 'sinatra/base'
-
+require 'sinatra'
+require 'sinatra/contrib'
 
 class App < Sinatra::Base
+  configure :development do
+    register Sinatra::Reloader
+  end
+
 
   get '/' do
-    "Environment is: #{ENV['RACK_ENV']}"
+    "#{ENV.inspect}"
   end
 
 end
