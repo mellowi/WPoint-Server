@@ -1,0 +1,24 @@
+{
+  "latitude"  : 60.00000000000000,
+  "longitude" : 25.00000000000000,
+  "results": [
+    {
+      "bssid"     : "F0:F0:F0:F0:F0:F0",
+      "ssid"      : "EpicWLAN",
+      "dbn"       : -10,
+      "open"      : true
+    },
+    {
+      "bssid"     : "11:11:11:11:11:11",
+      "ssid"      : "Free",
+      "dbm"       : -20,
+      "open"      : true
+    },
+    {
+      "bssid"     : "AA:AA:AA:AA:AA:AA",
+      "ssid"      : "Home",
+      "dbm"       : -30,
+      "open"      : false
+    }
+  ]
+}

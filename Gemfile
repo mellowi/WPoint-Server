@@ -10,6 +10,10 @@ gem 'foreman'
 
 group :test do
   gem 'rake'
-  gem "rspec"
-  gem "simplecov"
+  gem 'rspec'
+  gem 'simplecov'
+end
+
+group :developent do
+  gem 'awesome_print'
 end
