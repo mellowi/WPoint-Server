@@ -1,24 +1,28 @@
-GETTING UP AND RUNNING
+Getting up and running
 ======================
 
-Install git
------------
+Install git (if not already installed)
+--------------------------------------
 **Linux**
+
     sudo apt-get install git-core
 
 **Mac OS X**
+
     brew install git
 
 
 Install MongoDB
 ---------------
 **Linux**
+
     sudo apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10
     sudo sh -c "echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' >> /etc/apt/sources.list"
     sudo apt-get update
     sudo apt-get install mongodb-10gen
 
 **Mac OS X**
+
     brew install mongodb
     <follow given instructions to make it run on boot>
 
@@ -56,10 +60,10 @@ Start your engines
 
 URLS
 ====
-Development
------------
+**Development**
+
     http://localhost:5000
 
-Production
-----------
+**Production**
+
     http://wpoint.herokuapp.com
