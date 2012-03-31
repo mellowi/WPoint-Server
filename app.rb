@@ -1,13 +1,9 @@
-require 'rubygems'
-require 'sinatra'
-require 'sinatra/contrib'
-require 'mongoid'
-require 'mongoid_spacial'
 Dir["./models/*.rb"].each {|file| require file }
 
 
 class App < Sinatra::Base
 
+  # --- settings for environments -------------------------
   configure :development do
     register Sinatra::Reloader
     Mongoid.logger = Logger.new("log/development.log")
@@ -19,14 +15,23 @@ class App < Sinatra::Base
     Mongoid.logger.level = Logger::ERROR
   end
 
+
+  # --- connect to DB -------------------------------------
   Mongoid.load!("config/mongoid.yml")
 
 
-  get '/spots' do
+  # --- actions -------------------------------------------
+  get '/' do
+    "Try /spots or /report"
   end
 
+  get '/spots' do
+    result = Hotspot.all.entries
+    result.to_json
+  end
 
   post '/report' do
+    # todo
   end
 
 end

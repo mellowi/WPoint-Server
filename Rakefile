@@ -1,4 +1,3 @@
-require 'awesome_print'
 require 'rspec/core/rake_task'
 
 ENV['RACK_ENV'] = "development"  unless ENV['RACK_ENV']
@@ -14,17 +13,14 @@ task :spec do
 end
 
 
-desc "Clears the db and generates some random data"
+desc "Clears the DB and generates some random data"
 task :test_data do
-  require 'mongoid'
-  require 'mongoid_spacial'
-  require 'database_cleaner'
-  require 'faker'
+  require 'bundler'
+  Bundler.require
   Dir["./models/*.rb"].each {|file| require file }
 
-
   # Helper methods
-  def random(range)
+  def random_within(range)
     Random.new.rand(range)
   end
 
@@ -35,7 +31,7 @@ task :test_data do
   end
 
   def ssid
-    "#{Faker::Lorem.words(1).first.capitalize}#{random(0..9)}"
+    "#{Faker::Lorem.words(1).first.capitalize}#{random_within(0..9)}"
   end
 
 
@@ -47,35 +43,39 @@ task :test_data do
 
   ### Reports
   20.times do
-    user_latitude  = random(-90..90)
-    user_longitude = random(-180..180)
+    # Fake observation location
+    user_latitude  = random_within(-90..90)
+    user_longitude = random_within(-180..180)
 
-    # Spots per observation location
+    # Fake detected spots at observation location
     10.times do
       r = Report.new(
                      bssid:     mac_address,
                      ssid:      ssid,
-                     latitude:  user_latitude + random(-0.10..0.10),
-                     longitude: user_longitude + random(-0.10..0.10),
-                     dbm:       random(-70..0),
-                     open:      random(0..1)
+                     latitude:  user_latitude + random_within(-0.10..0.10),
+                     longitude: user_longitude + random_within(-0.10..0.10),
+                     dbm:       random_within(-70..0),
+                     open:      random_within(0..1)
                     )
       r.save!  rescue "Error: #{r.errors.full_messages.join(', ')}"
     end
   end
 
   ### HOTSPOTS
+  # Todo: Remove, when there's an algorithm to calculate these
   100.times do
     h = Hotspot.new(
                    bssid:     mac_address,
                    ssid:      ssid,
                    location: {
-                      latitude:  random(-90.0..90.0),
-                      longitude: random(-180.0..180.0)
+                      lat:    random_within(-90.0..90.0),
+                      lon:    random_within(-180.0..180.0)
                    },
-                   open:      random(0..1)
+                   open:      random_within(0..1)
                   )
     h.save!  rescue "Error: #{h.errors.full_messages.join(', ')}"
   end
 
+  puts "-" * 80
+  puts "Done. Database now contains #{Report.count} reports and #{Hotspot.count} hotspots."
 end
