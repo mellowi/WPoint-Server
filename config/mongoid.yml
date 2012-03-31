@@ -1,10 +1,17 @@
+defaults: &defaults
+  autocreate_indexes: true
+
+
 development:
+  <<: *defaults
   host: localhost
   database: wpoint_development
 
 test:  
+  <<: *defaults
   host: localhost
   database: wpoint_test
 
 production:
+  <<: *defaults
   uri: <%= ENV['MONGOHQ_URL'] %>

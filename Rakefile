@@ -2,7 +2,8 @@ require 'rspec/core/rake_task'
 
 ENV['RACK_ENV'] = "development"  unless ENV['RACK_ENV']
 
-task :default => :test_data
+task :default => :spec
+
 
 desc "Run RSpec specs"
 task :spec do
@@ -68,8 +69,8 @@ task :test_data do
                    bssid:     mac_address,
                    ssid:      ssid,
                    location: {
-                      lat:    random_within(-90.0..90.0),
-                      lon:    random_within(-180.0..180.0)
+                      lat:    62 + random_within(-0.10..0.10),
+                      lon:    26 + random_within(-0.10..0.10)
                    },
                    open:      random_within(0..1)
                   )
