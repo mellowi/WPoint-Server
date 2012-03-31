@@ -7,7 +7,6 @@ class Report
   validates_presence_of :latitude
   validates_presence_of :longitude
   validates_presence_of :dbm
-  validates_presence_of :open
 
   validates_format_of :bssid, with: /^([0-9a-f]{2}[:-]){5}([0-9a-f]{2})$/i
   validates_length_of :ssid, within: 1..32
@@ -20,7 +19,7 @@ class Report
                              greater_than_or_equal_to: -180,
                              less_than_or_equal_to: 180
 
-  validates_numericality_of :signal,
+  validates_numericality_of :dbm,
                              greater_than_or_equal_to: -70,
                              less_than_or_equal_to: 0
 

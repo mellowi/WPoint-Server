@@ -8,6 +8,9 @@ gem 'mongoid_spacial'
 gem 'bson_ext'
 gem 'foreman'
 
+gem 'database_cleaner'
+gem 'faker'
+
 group :test do
   gem 'rake'
   gem 'rspec'

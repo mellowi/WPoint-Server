@@ -3,11 +3,7 @@ require 'sinatra'
 require 'sinatra/contrib'
 require 'mongoid'
 require 'mongoid_spacial'
-
-require './models/hotspot'
-require './models/report'
-
-
+Dir["./models/*.rb"].each {|file| require file }
 
 
 class App < Sinatra::Base
@@ -26,13 +22,11 @@ class App < Sinatra::Base
   Mongoid.load!("config/mongoid.yml")
 
 
-  get '/' do
-    "Download file"
+  get '/spots' do
   end
 
 
-  post '/' do
-    "Upload file"
+  post '/report' do
   end
 
 end

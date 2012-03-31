@@ -1,0 +1,25 @@
+{
+    "hotspots": [
+        {
+            "bssid"     : "FF:FF:FF:FF:FF:FF"
+            "ssid"      : "EUROCRACK"
+            "latitude"  : 60.19818882923573
+            "longitude" : 24.95029801502824
+            "open"      : true
+        },
+        {
+            "bssid"     : "11:11:11:11:11:11"
+            "ssid"      : "Trololol"
+            "latitude"  : 60.19930201239102
+            "longitude" : 24.95112312312123
+            "open"      : true
+        },
+        {
+            "bssid"     : "FF:FF:FF:FF:FF:FF"
+            "ssid"      : "wlan skärbä"
+            "latitude"  : 60.17312123123123
+            "longitude" : 24.94931231012312
+            "open"      : true
+        }
+    ]
+}
