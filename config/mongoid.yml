@@ -1,0 +1,10 @@
+development:
+  host: localhost
+  database: wpoint_development
+
+test:  
+  host: localhost
+  database: wpoint_test
+
+production:
+  uri: <%= ENV['MONGOHQ_URL'] %>
