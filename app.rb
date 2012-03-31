@@ -4,6 +4,8 @@ Dir["./models/*.rb"].each {|file| require file }
 class App < Sinatra::Base
 
   # --- settings for environments -------------------------
+  FileUtils.mkdir("log")  unless File.exists?("log")
+
   configure :development do
     register Sinatra::Reloader
     Mongoid.logger = Logger.new("log/development.log")
