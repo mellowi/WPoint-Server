@@ -13,7 +13,7 @@ class App < Sinatra::Base
 
 
   get '/' do
-    "#{ENV.inspect}"
+    "Hello"
   end
 
 end
