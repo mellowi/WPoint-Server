@@ -72,6 +72,9 @@ class App < Sinatra::Base
       halt 500, {"message" => "Saving report failed: #{ex.message}."}.to_json
     end
 
+    Report.where(:
+
+
     halt 201, {"message" => "Reports created."}.to_json
   end
 

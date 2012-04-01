@@ -2,7 +2,6 @@ class Hotspot
   include Mongoid::Document
   include Mongoid::Timestamps
 
-  # There's a bug in mongoid_spacial, remove silencer when fix is out
   ActiveSupport::Deprecation.silence do
     include Mongoid::Spacial::Document
   end

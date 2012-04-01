@@ -73,8 +73,10 @@ task :test_data do
       r = Report.new(
                      bssid:     mac_address,
                      ssid:      ssid,
-                     latitude:  user_latitude + random_within(-0.01..0.01),
-                     longitude: user_longitude + random_within(-0.01..0.01),
+                     location: {
+                        lat: user_latitude + random_within(-0.01..0.01),
+                        lon: user_longitude + random_within(-0.01..0.01),
+                     },
                      dbm:       random_within(-70..0),
                      open:      random_within(0..1)
                     )
