@@ -63,10 +63,8 @@ class App < Sinatra::Base
       data["results"].each do |report|
         Report.create!(bssid:     report["bssid"],
                        ssid:      report["ssid"],
-                       source: {
-                         lat:     data["latitude"],
-                         lng:     data["longitude"]
-                       },
+                       latitude:  data["latitude"],
+                       longitude: data["longitude"],
                        dbm:       report["dbm"],
                        open:      report["open"])
       end

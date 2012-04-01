@@ -74,14 +74,12 @@ task :test_data do
       user_latitude  = 62 + random_within(-0.01..0.01)
       user_longitude = 26 + random_within(-0.01..0.01)
 
-      r = Report.new(bssid:  ap_bssid,
-                     ssid:   ap_ssid,
-                     source: {
-                        lat: user_latitude,
-                        lng: user_longitude
-                     },
-                     dbm:     random_within(-30..0),
-                     open:    is_open)
+      r = Report.new(bssid:     ap_bssid,
+                     ssid:      ap_ssid,
+                     latitude:  user_latitude,
+                     longitude: user_longitude,
+                     dbm:       random_within(-30..0),
+                     open:      is_open)
       r.save!  rescue "Error: #{r.errors.full_messages.join(', ')}"
     end
   end
