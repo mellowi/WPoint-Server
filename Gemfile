@@ -7,7 +7,6 @@ gem 'mongoid'
 gem 'mongoid_spacial'
 gem 'bson_ext'
 gem 'foreman'
-gem 'json'
 
 gem 'database_cleaner'
 gem 'faker'
