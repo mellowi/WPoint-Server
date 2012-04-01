@@ -52,53 +52,39 @@ task :test_data do
   end
 
   def ssid
-    "#{Faker::Lorem.words(1).first.capitalize}#{random_within(0..9)}"
+    "#{Faker::Lorem.words(1).first.capitalize}"
   end
 
 
-  # Logic starts here -->
+  # Logic starts here
   Mongoid.load!("config/mongoid.yml")
   DatabaseCleaner.strategy = :truncation
   DatabaseCleaner.orm = "mongoid"
   DatabaseCleaner.clean
 
-  ### Reports
-  20.times do
-    # Fake observation location
-    user_latitude  = random_within(-90..90)
-    user_longitude = random_within(-180..180)
 
-    # Fake detected spots at observation location
-    10.times do
-      r = Report.new(
-                     bssid:     mac_address,
-                     ssid:      ssid,
+  # Number of different access points
+  10.times do 
+    ap_bssid = mac_address
+    ap_ssid  = ssid
+    is_open  = random_within(0..1)
+
+    ### Number of observation points
+    30.times do
+      user_latitude  = 62 + random_within(-0.01..0.01)
+      user_longitude = 26 + random_within(-0.01..0.01)
+
+      r = Report.new(bssid:  ap_bssid,
+                     ssid:   ap_ssid,
                      source: {
-                        lat: user_latitude + random_within(-0.01..0.01),
-                        lng: user_longitude + random_within(-0.01..0.01)
+                        lat: user_latitude,
+                        lng: user_longitude
                      },
-                     dbm:       random_within(-70..0),
-                     open:      random_within(0..1)
-                    )
+                     dbm:     random_within(-30..0),
+                     open:    is_open)
       r.save!  rescue "Error: #{r.errors.full_messages.join(', ')}"
     end
   end
 
-  ### HOTSPOTS
-  # Todo: Remove, when there's an algorithm to calculate these
-  100.times do
-    h = Hotspot.new(
-                   bssid:     mac_address,
-                   ssid:      ssid,
-                   location: {
-                      lat:    62 + random_within(-0.01..0.01),
-                      lng:    26 + random_within(-0.01..0.01)
-                   },
-                   open:      random_within(0..1)
-                  )
-    h.save!  rescue "Error: #{h.errors.full_messages.join(', ')}"
-  end
-
-  puts "-" * 80
-  puts "Done. Database now contains #{Report.count} reports and #{Hotspot.count} hotspots."
+  puts "(!) Database now contains #{Report.count} reports and #{Hotspot.count} hotspots."
 end
