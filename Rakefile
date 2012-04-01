@@ -4,7 +4,7 @@ Bundler.require
 
 ENV['RACK_ENV'] = "development"  unless ENV['RACK_ENV']
 
-task :default => :spec
+task :default => :console
 
 
 desc "Run RSpec specs"
@@ -13,6 +13,15 @@ task :spec do
     t.rspec_opts = ["--colour", "--format progress", "--require ./spec/spec_helper.rb"]
     t.pattern    = 'spec/**/*_spec.rb'
   end
+end
+
+
+desc "Console"
+task :console do
+  Dir["./models/*.rb"].each {|file| require file }
+  Mongoid.load!("config/mongoid.yml")
+  require 'irb'
+  IRB.start
 end
 
 

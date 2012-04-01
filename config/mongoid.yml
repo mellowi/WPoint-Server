@@ -1,6 +1,6 @@
 defaults: &defaults
   autocreate_indexes: true
-
+  allow_dynamic_fields: false
 
 development:
   <<: *defaults

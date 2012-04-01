@@ -54,24 +54,21 @@ class App < Sinatra::Base
     content_type :json
 
     unless params[:data]
-      halt 400, {"message" => "File not given."}.to_json
+      halt 400, {"message" => "File not uploaded."}.to_json
     end
 
     data = JSON.parse(params[:data][:tempfile].read)
-
-    observer_latitude  = data["latitude"]
-    observer_longitude = data["longitude"]
 
     begin
       data["results"].each do |report|
         Report.create!(bssid:     report["bssid"],
                        ssid:      report["ssid"],
-                       latitude:  observer_latitude,
-                       longitude: observer_longitude,
+                       latitude:  data["latitude"],
+                       longitude: data["longitude"],
                        dbm:       report["dbm"],
                        open:      report["open"])
       end
-    rescue Exception => ex
+    rescue StandardError => ex
       halt 500, {"message" => "Saving report failed: #{ex.message}."}.to_json
     end
 
