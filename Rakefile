@@ -1,4 +1,6 @@
 require 'rspec/core/rake_task'
+require 'bundler'
+Bundler.require
 
 ENV['RACK_ENV'] = "development"  unless ENV['RACK_ENV']
 
@@ -14,10 +16,19 @@ task :spec do
 end
 
 
+desc "Clear the DB"
+namespace :db do
+  task :drop do
+    Mongoid.load!("config/mongoid.yml")
+    DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner.orm = "mongoid"
+    DatabaseCleaner.clean
+  end
+end
+
+
 desc "Clears the DB and generates some random data"
 task :test_data do
-  require 'bundler'
-  Bundler.require
   Dir["./models/*.rb"].each {|file| require file }
 
   # Helper methods
@@ -53,8 +64,8 @@ task :test_data do
       r = Report.new(
                      bssid:     mac_address,
                      ssid:      ssid,
-                     latitude:  user_latitude + random_within(-0.10..0.10),
-                     longitude: user_longitude + random_within(-0.10..0.10),
+                     latitude:  user_latitude + random_within(-0.01..0.01),
+                     longitude: user_longitude + random_within(-0.01..0.01),
                      dbm:       random_within(-70..0),
                      open:      random_within(0..1)
                     )
@@ -69,8 +80,8 @@ task :test_data do
                    bssid:     mac_address,
                    ssid:      ssid,
                    location: {
-                      lat:    62 + random_within(-0.10..0.10),
-                      lon:    26 + random_within(-0.10..0.10)
+                      lat:    62 + random_within(-0.01..0.01),
+                      lon:    26 + random_within(-0.01..0.01)
                    },
                    open:      random_within(0..1)
                   )

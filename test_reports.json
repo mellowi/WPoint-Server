@@ -5,7 +5,7 @@
         {
             "bssid"     : "F0:F0:F0:F0:F0:F0",
             "ssid"      : "EpicWLAN",
-            "dbn"       : -10,
+            "dbm"       : -10,
             "open"      : true
         },
         {

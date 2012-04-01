@@ -3,7 +3,7 @@ Dir["./models/*.rb"].each {|file| require file }
 
 class App < Sinatra::Base
 
-  DEFAULT_RADIUS_IN_METERS = 1000
+  DEFAULT_RADIUS_IN_METERS = 200
 
   # --- settings for environments -------------------------
   FileUtils.mkdir("log")  unless File.exists?("log")
@@ -26,13 +26,17 @@ class App < Sinatra::Base
 
   # --- actions -------------------------------------------
   get '/' do
-    "Try /spots or /report"
+    "GET /api/v1/spots or POST /api/v1/report"
   end
 
-  get '/spots' do
+
+  # --- get hotspots
+  # http://localhost:5000/api/v1/spots.json?latitude=62&longitude=26
+  get '/api/v1/spots.json' do
+    content_type :json
     params[:radius] ||= DEFAULT_RADIUS_IN_METERS
 
-    result = Hotspot.where(
+    results = Hotspot.where(
       :location.near(:sphere) => {
         point: [params[:longitude], params[:latitude]],
         max:   params[:radius],
@@ -40,11 +44,38 @@ class App < Sinatra::Base
       }
     ).entries
 
-    result.to_json
+    halt 200, results.to_json
   end
 
-  post '/report' do
-    # todo
+
+  # --- report results
+  # curl -X POST -F "data=@test_reports.json" http://localhost:5000/api/v1/report.json
+  post '/api/v1/report.json' do
+    content_type :json
+
+    unless params[:data]
+      halt 400, {"message" => "File not given."}.to_json
+    end
+
+    data = JSON.parse(params[:data][:tempfile].read)
+
+    observer_latitude  = data["latitude"]
+    observer_longitude = data["longitude"]
+
+    begin
+      data["results"].each do |report|
+        Report.create!(bssid:     report["bssid"],
+                       ssid:      report["ssid"],
+                       latitude:  observer_latitude,
+                       longitude: observer_longitude,
+                       dbm:       report["dbm"],
+                       open:      report["open"])
+      end
+    rescue Exception => ex
+      halt 500, {"message" => "Saving report failed: #{ex.message}."}.to_json
+    end
+
+    halt 201, {"message" => "Reports created."}.to_json
   end
 
 end
