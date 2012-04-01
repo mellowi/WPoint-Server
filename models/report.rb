@@ -8,7 +8,7 @@ class Report
 
   validates_presence_of :bssid
   validates_presence_of :ssid
-  validates_presence_of :location
+  validates_presence_of :source
   validates_presence_of :dbm
 
   validates_format_of :bssid, with: /^([0-9a-f]{2}[:-]){5}([0-9a-f]{2})$/i
@@ -20,9 +20,9 @@ class Report
 
   field :bssid,     type: String
   field :ssid,      type: String
-  field :location,  type: Array,    spacial: true
+  field :source,    type: Array,    spacial: true
   field :dbm,       type: Integer
   field :open,      type: Boolean
 
-  spacial_index :location
+  spacial_index :source
 end

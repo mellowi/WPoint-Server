@@ -36,13 +36,49 @@ class App < Sinatra::Base
     content_type :json
     params[:radius] ||= DEFAULT_RADIUS_IN_METERS
 
-    results = Hotspot.where(
-      :location.near(:sphere) => {
+#    results = Hotspot.where(
+#      :location.near(:sphere) => {
+#        point: [params[:longitude], params[:latitude]],
+#        max:   params[:radius],
+#        unit:  :m
+#      }
+ #   ).entries
+
+    results = []
+
+    near_access_points = Report.where(
+      :source.near(:sphere) => {
         point: [params[:longitude], params[:latitude]],
         max:   params[:radius],
         unit:  :m
       }
-    ).entries
+    )
+
+    near_bssids = near_access_points.map(&:bssid).uniq
+
+    near_bssids.each do |bssid|
+      reports = near_access_points.where(:bssid => bssid).entries
+
+      latitude_sum  = 0
+      longitude_sum = 0
+
+      # TODO: Make more accurate
+      reports.each do |report|
+        latitude_sum  = latitude_sum  + report.source[:lat] * (1 - (-report.dbm / 100.0))
+        longitude_sum = longitude_sum + report.source[:lng] * (1 - (-report.dbm / 100.0))
+      end
+
+      report_count = reports.count
+      estimated_latitude  = latitude_sum  / report_count
+      estimated_longitude = longitude_sum / report_count
+
+      h = Hotspot.find_or_initialize_by(:bssid => bssid,
+                                        :ssid => reports.first.ssid)
+      h.location = [estimated_longitude, estimated_latitude]
+      h.open     = reports.first.open
+      h.save!
+      results << h
+    end
 
     halt 200, results.to_json
   end
@@ -63,17 +99,16 @@ class App < Sinatra::Base
       data["results"].each do |report|
         Report.create!(bssid:     report["bssid"],
                        ssid:      report["ssid"],
-                       latitude:  data["latitude"],
-                       longitude: data["longitude"],
+                       source: {
+                         lat:     data["latitude"],
+                         lng:     data["longitude"]
+                       },
                        dbm:       report["dbm"],
                        open:      report["open"])
       end
     rescue StandardError => ex
       halt 500, {"message" => "Saving report failed: #{ex.message}."}.to_json
     end
-
-    Report.where(:
-
 
     halt 201, {"message" => "Reports created."}.to_json
   end
