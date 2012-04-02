@@ -27,3 +27,9 @@ end
 
 # --- connect to DB -------------------------------------
 Mongoid.load!("config/mongoid.yml")
+
+
+# --- the default route ---------------------------------
+get "/" do
+  halt 200, "WPoint server running here"
+end
