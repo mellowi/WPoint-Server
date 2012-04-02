@@ -4,11 +4,9 @@ source 'http://gems.github.com'
 
 gem 'sinatra'
 gem 'unicorn'
-
 gem 'mongoid'
 gem 'mongoid_spacial'
 gem 'bson_ext'
-
 gem 'foreman'
 
 group :test, :development do
