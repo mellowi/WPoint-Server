@@ -1,22 +1,22 @@
 source 'http://rubygems.org'
+source 'http://gems.rubyforge.org'
+source 'http://gems.github.com'
+
 
 gem 'sinatra'
 gem 'sinatra-contrib' # reloader
 gem 'unicorn'
+
 gem 'mongoid'
 gem 'mongoid_spacial'
 gem 'bson_ext'
+
 gem 'foreman'
 
-gem 'database_cleaner'
-gem 'faker'
-
-group :test do
+group :test, :development do
   gem 'rake'
   gem 'rspec'
-  gem 'simplecov'
-end
-
-group :development do
+  gem 'faker'
+  gem 'database_cleaner'
   gem 'awesome_print'
 end
