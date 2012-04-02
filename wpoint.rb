@@ -1,15 +1,20 @@
+# --- paths ----------------------------------------------
 LIB_PATH         = './lib/**/*.rb'
 MODELS_PATH      = './models/**/*.rb'
 CONTROLLERS_PATH = './controllers/**/*_controller.rb'
 
+
+# --- requires ------------------------------------------
 Dir[LIB_PATH].each {|file| require file }
 Dir[MODELS_PATH].each {|file| require file }
 Dir[CONTROLLERS_PATH].each { |file| require file }
 
 
-# --- settings for environments -------------------------
+# --- log dir -------------------------------------------
 FileUtils.mkdir("log")  unless File.exists?("log")
 
+
+# --- settings for environments -------------------------
 configure :development do |config|
   require 'sinatra/reloader'
   config.also_reload LIB_PATH
@@ -33,3 +38,4 @@ Mongoid.load!("config/mongoid.yml")
 get "/" do
   halt 200, "WPoint server running here"
 end
+
