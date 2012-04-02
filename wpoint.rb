@@ -19,7 +19,6 @@ class WPoint < Sinatra::Base
     Mongoid.logger.level = Logger::ERROR
   end
 
-
   # --- connect to DB -------------------------------------
   Mongoid.load!("config/mongoid.yml")
 
