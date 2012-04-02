@@ -2,11 +2,6 @@ WPoint
 ======
 This is the server side backend for WPoint using Ruby, Sinatra and MongoDB.
 
-### Authors
-
-Anssi Syrjäsalo
-Mikko Johansson
-
 
 Prerequisites
 =============
