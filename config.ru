@@ -4,4 +4,4 @@ require 'bundler'
 Bundler.require
 
 require './wpoint'
-run WPoint
+run Sinatra::Application

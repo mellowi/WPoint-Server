@@ -2,9 +2,7 @@ source 'http://rubygems.org'
 source 'http://gems.rubyforge.org'
 source 'http://gems.github.com'
 
-
 gem 'sinatra'
-gem 'sinatra-contrib' # reloader
 gem 'unicorn'
 
 gem 'mongoid'
@@ -14,6 +12,7 @@ gem 'bson_ext'
 gem 'foreman'
 
 group :test, :development do
+  gem 'sinatra-contrib' # reloader
   gem 'rake'
   gem 'rspec'
   gem 'faker'
