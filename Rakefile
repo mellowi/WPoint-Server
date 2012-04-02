@@ -18,7 +18,7 @@ end
 
 desc "Console"
 task :console do
-  Dir["./models/*.rb"].each {|file| require file }
+  Dir["./models/**/*.rb"].each {|file| require file }
   Mongoid.load!("config/mongoid.yml")
   require 'irb'
   IRB.start
@@ -29,6 +29,7 @@ desc "Clear the DB"
 namespace :db do
   task :drop do
     Mongoid.load!("config/mongoid.yml")
+    require 'database_cleaner'
     DatabaseCleaner.strategy = :truncation
     DatabaseCleaner.orm = "mongoid"
     DatabaseCleaner.clean
@@ -38,7 +39,9 @@ end
 
 desc "Clears the DB and generates some random data"
 task :test_data do
-  Dir["./models/*.rb"].each {|file| require file }
+  Dir["./models/**/*.rb"].each {|file| require file }
+  require 'database_cleaner'
+  require 'faker'
 
   # Helper methods
   def random_within(range)
