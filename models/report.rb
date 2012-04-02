@@ -19,6 +19,14 @@ class Report
                              greater_than_or_equal_to: -30,
                              less_than_or_equal_to: 0
 
+  validates_numericality_of :latitude,
+                             greater_than_or_equal_to: -90,
+                             less_than_or_equal_to: 90
+
+  validates_numericality_of :longitude,
+                             greater_than_or_equal_to: -180,
+                             less_than_or_equal_to: 180
+
   # Fields
   field :bssid,     type: String
   field :ssid,      type: String
