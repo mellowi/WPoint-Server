@@ -16,7 +16,7 @@ class Report
   validates_length_of :ssid, within: 1..32
 
   validates_numericality_of :dbm,
-                             greater_than_or_equal_to: -30,
+                             greater_than_or_equal_to: -100,
                              less_than_or_equal_to: 0
 
   validates_numericality_of :latitude,
