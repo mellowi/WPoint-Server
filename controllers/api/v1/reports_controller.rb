@@ -7,9 +7,9 @@ before_only(['/api/v1/report.*']) do
 end
 
 
-# EXAMPLE: curl -X POST -F "data=@test_reports.json" http://localhost:5000/api/v1/report.json
+# EXAMPLE: curl -X POST -F "data={payload}" http://localhost:5000/api/v1/report.json
 post '/api/v1/report.json' do
-  data = JSON.parse(params[:data][:tempfile].read)
+  data = JSON.parse(params[:data])
 
   begin
     data["results"].each do |report|
