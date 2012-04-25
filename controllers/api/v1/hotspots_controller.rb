@@ -8,9 +8,8 @@ before_only(['/api/v1/spots.*']) do
 end
 
 
-# EXAMPLE: curl http://localhost:5000/api/v1/spots.json?latitude=62&longitude=26
 get '/api/v1/spots.json' do
-  params[:radius] ||= 200  # in meters
+  params[:radius] ||= 100  # in meters
 
   results = Hotspot.where(
     :location.near(:sphere) => {

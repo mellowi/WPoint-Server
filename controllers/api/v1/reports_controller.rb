@@ -2,14 +2,17 @@ before_only(['/api/v1/report.*']) do
   content_type :json
 
   errors = []
-  errors << "File not uploaded."  unless params[:data]
+  errors << "No JSON data given."  unless params[:data]
   halt 400, {"message" => errors}.to_json  unless errors.empty?
 end
 
 
-# EXAMPLE: curl -X POST -F "data={payload}" http://localhost:5000/api/v1/report.json
 post '/api/v1/report.json' do
-  data = JSON.parse(params[:data])
+  begin
+    data = JSON.parse(params[:data])
+  rescue Exception => e
+    halt 500, {"message" => "Parsing JSON failed: #{ex.message}."}.to_json
+  end
 
   begin
     data["results"].each do |report|
@@ -24,5 +27,5 @@ post '/api/v1/report.json' do
     halt 500, {"message" => "Saving report failed: #{ex.message}."}.to_json
   end
 
-  halt 201, {"message" => "Reports created."}.to_json
+  halt 201, {"message" => "Report stored."}.to_json
 end
