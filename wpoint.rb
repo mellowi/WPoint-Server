@@ -8,10 +8,7 @@ CONTROLLERS_PATH = './controllers/**/*_controller.rb'
 Dir[LIB_PATH].each {|file| require file }
 Dir[MODELS_PATH].each {|file| require file }
 Dir[CONTROLLERS_PATH].each { |file| require file }
-
-
-# --- log dir -------------------------------------------
-FileUtils.mkdir("log")  unless File.exists?("log")
+require 'logger'
 
 
 # --- settings for environments -------------------------
@@ -20,12 +17,20 @@ configure :development do |config|
   config.also_reload LIB_PATH
   config.also_reload MODELS_PATH
   config.also_reload CONTROLLERS_PATH
-  Mongoid.logger = Logger.new("log/development.log")
+
+  log_output = Logger.new(STDOUT)
+  $log                 = log_output
+  $log.level           = Logger::DEBUG
+  Mongoid.logger       = log_output
   Mongoid.logger.level = Logger::DEBUG
 end
 
 configure :production do
-  Mongoid.logger = Logger.new("log/production.log")
+  FileUtils.mkdir("log")  unless File.exists?("log")
+  log_output = Logger.new("log/production.log", 1, 1 * 1024 * 1024)
+  $log                 = log_output
+  $log.level           = Logger::ERROR
+  Mongoid.logger       = log_output
   Mongoid.logger.level = Logger::ERROR
 end
 

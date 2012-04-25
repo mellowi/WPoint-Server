@@ -11,7 +11,9 @@ post '/api/v1/report.json' do
   begin
     data = JSON.parse(params[:data])
   rescue Exception => e
-    halt 500, {"message" => "Parsing JSON failed: #{ex.message}."}.to_json
+    error_message = "Parsing sent JSON failed: #{ex.message}."
+    $log.error "[ERROR] POST/report.json: #{error_message}"
+    halt 500, {"message" => error_message}.to_json
   end
 
   begin
@@ -24,7 +26,9 @@ post '/api/v1/report.json' do
                      open:      report["open"])
     end
   rescue StandardError => ex
-    halt 500, {"message" => "Saving report failed: #{ex.message}."}.to_json
+    error_message = "Saving report to database failed: #{ex.message}."
+    $log.error "[ERROR] POST/report.json: #{error_message}"
+    halt 500, {"message" => error_message}.to_json
   end
 
   halt 201, {"message" => "Report stored."}.to_json

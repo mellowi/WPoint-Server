@@ -4,6 +4,7 @@ before_only(['/api/v1/spots.*']) do
   errors = []
   errors << "Latitude not given as parameter."     unless params[:latitude]
   errors << "Longitude not given as a parameter."  unless params[:longitude]
+
   halt 400, {"message" => errors}.to_json  unless errors.empty?
 end
 
