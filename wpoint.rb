@@ -43,4 +43,3 @@ Mongoid.load!("config/mongoid.yml")
 get "/" do
   halt 200, "WPoint server running here"
 end
-
